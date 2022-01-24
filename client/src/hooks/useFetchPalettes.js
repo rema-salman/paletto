@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import convert from "color-convert";
 
-const BASE_URL = "https://paletto.glitch.me/palettes";
+const BASE_URL = "https://paletto.glitch.me/api/palettes";
 
 export default function useFetchPalettes(selectedImages) {
   const [loading1, setLoading] = useState(false);

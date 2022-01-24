@@ -4,7 +4,7 @@ module.exports = (app) => {
   const service = new ImageService();
 
   //get Top products and category
-  app.get("/images", async (req, res, next) => {
+  app.get("/api/images", async (req, res, next) => {
     const { query, page } = req.query;
 
     const { data } = await service.GetImages(query, page);

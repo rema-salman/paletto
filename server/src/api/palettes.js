@@ -9,64 +9,8 @@ const convert = require("color-convert");
 module.exports = (app) => {
   const service = new PaletteService();
 
-  // gets HSV from the image-pixel colours
-  function getHSV(imageData) {
-    const hsvList = [];
-    imageData.forEach((element) => {
-      hex = colorsys.rgbToHex(element.R, element.G, element.B);
-      hsv = colorsys.hex2Hsv(hex);
-      hsvList.push(hsv);
-    });
-    console.log(hsvList);
-    return hsvList;
-  }
-
-  // gets Image moments (features) from the image-pixel colours
-  function getImageMoments(imageData) {
-    RGBMoments = [];
-    const R = imageData.map(function (element) {
-      return element.R;
-    });
-    const G = imageData.map(function (element) {
-      return element.G;
-    });
-    const B = imageData.map(function (element) {
-      return element.B;
-    });
-
-    meanR = jStat.mean(R);
-    meanG = jStat.mean(G);
-    meanB = jStat.mean(B);
-    RGBMoments.push({
-      meanR,
-      meanG,
-      meanB,
-    });
-    stdR = jStat.stdev(R);
-    stdG = jStat.stdev(G);
-    stdB = jStat.stdev(B);
-
-    RGBMoments.push({
-      stdR,
-      stdG,
-      stdB,
-    });
-    skewR = jStat.skewness(R);
-    skewG = jStat.skewness(G);
-    skewB = jStat.skewness(B);
-
-    RGBMoments.push({
-      skewR,
-      skewG,
-      skewB,
-    });
-
-    console.log(RGBMoments);
-    return RGBMoments;
-  }
-
   //   MAIN SERVER ROUTE
-  app.post("/palettes", async (req, res) => {
+  app.post("/api/palettes", async (req, res) => {
     selectedImages = req.body;
 
     const resizedImages = await service.resizeImages(selectedImages);
@@ -108,8 +52,5 @@ module.exports = (app) => {
         return res.status(200).json(results);
       }
     });
-
-    // const hsv = service.getHSV(imageData);
-    // getImageMoments(imageData);
   });
 };

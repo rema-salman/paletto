@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 
-const BASE_URL = "https://paletto.glitch.me/images";
+const BASE_URL = "https://paletto.glitch.me/api/images";
 
 export default function useFetchImages() {
   const [loading, setLoading] = useState(false);
