@@ -6,7 +6,7 @@
   "scripts": {
     "client-install": "cd client && npm install",
     "dev": "NODE_ENV=dev nodemon --max-old-space-size=16000 src/index.js",
-    "start": "nodemon src/index.js"
+    "start": "node server/src/index.js"
   },
   "author": "Rema Salman",
   "license": "MIT",
