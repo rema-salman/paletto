@@ -1,0 +1,23 @@
+.inputGroup {
+  /* padding: 2rem; */
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 40%;
+  font-size: 1.5rem;
+}
+
+.searchBox {
+  border-style: none;
+  width: 100%;
+  padding: 0.5rem;
+  border-bottom: 1px solid var(--light-grey-color);
+}
+
+.searchIcon {
+  border: none;
+  background-color: none;
+  color: var(--light-grey-color);
+  font-size: 2rem;
+}
