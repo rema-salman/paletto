@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 
-const BASE_URL = "http://localhost:5000/images";
+const BASE_URL = "https://paletto.glitch.me/images";
 
 export default function useFetchImages() {
   const [loading, setLoading] = useState(false);
@@ -23,7 +23,7 @@ export default function useFetchImages() {
       .get(`${BASE_URL}?query=${query}&page=${page}`)
       .then((res) => {
         console.log(res);
-        
+
         //  sucess but empty data
         if (res.data.images.length === 0 || res.data.total_pages === 0) {
           setLoading(false);
