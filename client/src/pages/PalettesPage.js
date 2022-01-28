@@ -15,6 +15,7 @@ import Error from "../components/Error";
 
 import styles from "./HomePage.module.css";
 import { FaLessThan } from "react-icons/fa";
+import useFBTracker from "../hooks/useFBTracker";
 
 function PalettesPage() {
   const { selectedImages } = useContext(useSelectionContext);
@@ -39,6 +40,8 @@ function PalettesPage() {
     CMYK: false,
   });
 
+  const { addEventToTracker } = useFBTracker();
+
   // Use effect to envoke getting the palettes
   useEffect(() => {
     getPalettes(selectedImages);
@@ -52,35 +55,65 @@ function PalettesPage() {
         RGB: false,
         CMYK: false,
       });
+      addEventToTracker(
+        "Palette",
+        "color_mode_changed",
+        "Selected Color_Mode: HEX"
+      );
     } else if (e.target.value === "1") {
       setOptionDisabled({
         HEX: false,
         RGB: true,
         CMYK: false,
       });
+      addEventToTracker(
+        "Palette",
+        "color_mode_changed",
+        "Selected Color_Mode: RGB"
+      );
     } else if (e.target.value === "2") {
       setOptionDisabled({
         HEX: false,
         RGB: false,
         CMYK: true,
       });
+      addEventToTracker(
+        "Palette",
+        "color_mode_changed",
+        "Selected Color_Mode: CMYK"
+      );
     }
   }
 
   function handleMainColorsCoppy(index) {
     if (optionRef.current.value === "0") {
       navigator.clipboard.writeText(mainPalette[index]);
+      addEventToTracker(
+        "Palette",
+        "clipboard_color_coppied",
+        `color_coppied: ${mainPalette[index]}`
+      );
     } else if (optionRef.current.value === "1") {
       // convert HEX to RGB
       const colorModeRGB = getRGBColors();
       // needs to be coppied like this (1,78,143)
       var indexColorStr = `(${colorModeRGB.RGBList[index][0]},${colorModeRGB.RGBList[index][1]},${colorModeRGB.RGBList[index][2]})`;
       navigator.clipboard.writeText(indexColorStr);
+      addEventToTracker(
+        "Palette",
+        "clipboard_color_coppied",
+        `color_coppied: ${indexColorStr}`
+      );
     } else if (optionRef.current.value === "2") {
       // convert HEX to CMYK
       const colorModeCMYK = getCMYKColors();
       var indexColorStr = `(${colorModeCMYK.CMYKList[index][0]},${colorModeCMYK.CMYKList[index][1]},${colorModeCMYK.CMYKList[index][2]})`;
       navigator.clipboard.writeText(indexColorStr);
+      addEventToTracker(
+        "Palette",
+        "clipboard_color_coppied",
+        `color_coppied: ${indexColorStr}`
+      );
     }
     setCoppied("Coppied!");
   }
@@ -88,17 +121,32 @@ function PalettesPage() {
   function handleSecondaryColorsCoppy(index, innerIndex) {
     if (optionRef.current.value === "0") {
       navigator.clipboard.writeText(secondaryPalettes[index][innerIndex]);
+      addEventToTracker(
+        "Palette",
+        "clipboard_color_coppied",
+        `color_coppied: ${secondaryPalettes[index][innerIndex]}`
+      );
     } else if (optionRef.current.value === "1") {
       // convert HEX to RGB
       const colorModeRGB = getRGBColors();
       // needs to be coppied like this (1,78,143)
       var indexColorStr = `(${colorModeRGB.RGBList2[index][innerIndex][0]},${colorModeRGB.RGBList2[index][innerIndex][1]},${colorModeRGB.RGBList2[index][innerIndex][2]})`;
       navigator.clipboard.writeText(indexColorStr);
+      addEventToTracker(
+        "Palette",
+        "clipboard_color_coppied",
+        `color_coppied: ${indexColorStr}`
+      );
     } else if (optionRef.current.value === "2") {
       // convert HEX to CMYK
       const colorModeCMYK = getCMYKColors();
       var indexColorStr = `(${colorModeCMYK.CMYKList2[index][innerIndex][0]},${colorModeCMYK.CMYKList2[index][innerIndex][1]},${colorModeCMYK.CMYKList2[index][innerIndex][2]})`;
       navigator.clipboard.writeText(indexColorStr);
+      addEventToTracker(
+        "Palette",
+        "clipboard_color_coppied",
+        `color_coppied: ${indexColorStr}`
+      );
     }
     setCoppied("Coppied!");
   }

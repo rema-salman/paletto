@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { useSelectionContext } from "../../hooks/useSelectionContext";
 import styles from "./ImagesCard.module.css";
 import { FaRegHeart, FaRegTrashAlt } from "react-icons/fa";
+import useFBTracker from "../../hooks/useFBTracker";
 
 export default function ImageCard({ image, palette, isSmall }) {
   const {
@@ -11,7 +12,7 @@ export default function ImageCard({ image, palette, isSmall }) {
   } = useContext(useSelectionContext);
 
   const [isSelected, setIsSelected] = useState(false);
-
+  const { addEventToTracker } = useFBTracker();
   useEffect(() => {
     const storedImage = selectedImages.find(
       (object) => object.image.id === image.id
@@ -28,8 +29,18 @@ export default function ImageCard({ image, palette, isSmall }) {
     const imagesCard = { image, palette };
     if (isSelected) {
       removeImageFromSelectedImagesList(imagesCard);
+      addEventToTracker(
+        "Selection",
+        "removed_image_btn_clicked",
+        `imageID: ${imagesCard.image.id}`
+      );
     } else {
       addImageToSelectedImagesList(imagesCard);
+      addEventToTracker(
+        "Selection",
+        "add_image_btn_clicked",
+        `imageID: ${imagesCard.image.id}`
+      );
     }
   };
 

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import useFBTracker from "./useFBTracker";
 
 const BASE_URL = "https://paletto-app.herokuapp.com/api/images";
 
@@ -10,6 +11,8 @@ export default function useFetchImages() {
   const [currentPage, setCurrentPage] = useState(0);
   const [query, setSearchQuery] = useState("");
   const [totalPages, setTotalPages] = useState(0);
+
+  const { addEventToTracker } = useFBTracker();
 
   const submitRequest = (query, page) => {
     setSearchQuery(query);
@@ -33,6 +36,11 @@ export default function useFetchImages() {
           console.log(res.data.total_pages);
           setImages(res.data.images);
           setTotalPages(res.data.total_pages);
+          addEventToTracker(
+            "Performance",
+            "search_results_loaded",
+            `N of images:${res.data.images.length}, N of pages:${res.data.total_pages}`
+          );
         }
       })
       .catch((e) => {

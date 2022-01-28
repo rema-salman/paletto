@@ -1,14 +1,17 @@
 import React, { useState } from "react";
+import useFBTracker from "../../hooks/useFBTracker";
 
 import styles from "./Form.module.css";
 
 const Form = ({ submitSearch }) => {
   const [searchQuery, setSearchQuery] = useState("");
+  const { addEventToTracker } = useFBTracker();
 
   const onSubmit = (e) => {
     e.preventDefault();
     if (!searchQuery || searchQuery === "") return;
     submitSearch(searchQuery);
+    addEventToTracker("Search", "search_btn_clicked", searchQuery);
   };
 
   return (

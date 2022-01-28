@@ -19,6 +19,7 @@ import ImageCard from "../components/ImageCard/ImageCard";
 import Pagination from "../components/Pagination";
 
 import styles from "./HomePage.module.css";
+import useFBTracker from "../hooks/useFBTracker";
 
 function HomePage() {
   const [page, setPage] = useState(1);
@@ -43,6 +44,8 @@ function HomePage() {
     return () => (isScreenMounted.current = false);
   }, []);
 
+  const { addEventToTracker } = useFBTracker();
+
   return (
     <Fragment>
       {/* Form */}
@@ -56,7 +59,12 @@ function HomePage() {
       {error && <Error message={error} />}
 
       {/* Loader */}
-      {loading && <Loader />}
+      {loading && (
+        <Fragment>
+          <Loader />
+          {addEventToTracker("Performance", "search_results_loading", "")}
+        </Fragment>
+      )}
 
       <div className="row">
         {/* SelectedImages container */}
@@ -67,13 +75,30 @@ function HomePage() {
               Selected Images
             </h3>
             <div className="d-flex justify-content-around align-items-center">
-              <Link to="/palettes" className={`btn ${styles.button}`}>
+              <Link
+                to="/palettes"
+                className={`btn ${styles.button}`}
+                onClick={() =>
+                  addEventToTracker(
+                    "Palette-Generation",
+                    "get_Palettes_btn_clicked",
+                    `N of selected images:${selectedImages.length}`
+                  )
+                }
+              >
                 Get Palettes
               </Link>
               <button
                 type="submit"
                 className={`btn ${styles.deleteBtn}`}
-                onClick={() => removeSelections()}
+                onClick={() => {
+                  removeSelections();
+                  addEventToTracker(
+                    "Selection",
+                    "remove_all_btn_clicked",
+                    `N of selected images:${selectedImages.length}`
+                  );
+                }}
               >
                 Remove All
               </button>
